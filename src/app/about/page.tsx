@@ -1,7 +1,7 @@
 "use client"
 
 import Footer from "../page/footer";
-
+import Image from "next/image";
 
 export default function About() {
 
@@ -11,7 +11,7 @@ export default function About() {
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8">
         <h1 className="text-4xl font-bold text-red-700 mb-6 text-center">About Me</h1>
 
-        <img className=" " src="https://i.ibb.co/2013K63Q/1745664558281-482251449-1448538372790232-466907292978263830-n.jpg"  />
+        <Image className=" " alt="me" src="https://i.ibb.co/2013K63Q/1745664558281-482251449-1448538372790232-466907292978263830-n.jpg"  />
 
         <p className="mb-4">
           My name is <strong>Md. Riyad</strong>. I am from <strong>Setabganj, Dinajpur, Bangladesh</strong>. I am 24 years old.
