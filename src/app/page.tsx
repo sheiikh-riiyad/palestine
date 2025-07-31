@@ -146,7 +146,7 @@ export default function Home() {
       <section className="text-center py-16 bg-red-100 shadow-inner">
         <h1 className="text-5xl font-extrabold text-red-700 mb-4">Support Palestine</h1>
         <p className="text-xl text-gray-700 mb-6">Your donation can save lives and bring hope.</p>
-        <a href="#donate" className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold">
+        <a href="#donate" className="bg-red-800 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold">
           Donate Now
         </a>
       </section>
