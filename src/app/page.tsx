@@ -5,7 +5,7 @@ import { db } from './lib/firebase';
 import { ref, push, onValue } from 'firebase/database';
 import Footer from './page/footer';
 import { QRCodeSVG } from 'qrcode.react';
-
+import Image from 'next/image';
 type Donation = {
   name: string;
   amount: string;
@@ -44,31 +44,33 @@ export default function Home() {
   const [realNews, setRealNews] = useState<RealNewsItem[]>([]);
   const [latestVideoId, setLatestVideoId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const donationsRef = ref(db, 'donations');
-    const unsubscribe = onValue(donationsRef, snapshot => {
-      const data = snapshot.val();
-      let totalBDT = 0;
-      let totalUSDT = 0;
+ useEffect(() => {
+  const donationsRef = ref(db, 'donations');
+  const unsubscribe = onValue(donationsRef, snapshot => {
+    const data = snapshot.val() as Record<string, Donation>; // ✅ properly typed
+    let totalBDT = 0;
+    let totalUSDT = 0;
 
-      if (data) {
-        Object.values(data).forEach((donation: any) => {
-          const amount = Number(donation.amount);
-          if (!isNaN(amount)) {
-            if (donation.currency === 'USDT') {
-              totalUSDT += amount;
-            } else {
-              totalBDT += amount;
-            }
+    if (data) {
+      Object.values(data).forEach((donation) => {
+        const amount = Number(donation.amount);
+        if (!isNaN(amount)) {
+          if (donation.currency === 'USDT') {
+            totalUSDT += amount;
+          } else {
+            totalBDT += amount;
           }
-        });
-      }
+        }
+      });
+    }
 
-      setTotalDonatedBDT(totalBDT);
-      setTotalDonatedUSDT(totalUSDT);
-    });
-    return () => unsubscribe();
-  }, []);
+    setTotalDonatedBDT(totalBDT);
+    setTotalDonatedUSDT(totalUSDT);
+  });
+
+  return () => unsubscribe();
+}, []);
+
 
   useEffect(() => {
     const fetchLatestVideo = async () => {
@@ -227,7 +229,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {realNews.slice(0, 5).map((item, index) => (
             <div key={index} className="bg-white rounded-lg shadow p-4 flex flex-col">
-              {item.image && <img src={item.image} alt={item.title} className="w-full h-48 object-cover rounded" />}
+              {item.image && <Image src={item.image} alt={item.title} className="w-full h-48 object-cover rounded" />}
               <div className="flex-grow mt-4">
                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-red-700 hover:underline">
                   {item.title}
