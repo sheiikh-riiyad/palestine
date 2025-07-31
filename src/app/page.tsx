@@ -85,18 +85,26 @@ export default function Home() {
     fetchLatestVideo();
   }, []);
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await fetch('/api/news');
-        const data = await response.json();
-        setRealNews(data.articles || []);
-      } catch (error) {
-        console.error('News fetch failed:', error);
+ useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const response = await fetch('/api/news');
+      const text = await response.text();
+
+      if (!text) {
+        console.warn('News API returned empty response');
+        return;
       }
-    };
-    fetchNews();
-  }, []);
+
+      const data = JSON.parse(text);
+      setRealNews(data.articles || []);
+    } catch (error) {
+      console.error('News fetch failed:', error);
+    }
+  };
+  fetchNews();
+}, []);
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -229,14 +237,22 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {realNews.slice(0, 5).map((item, index) => (
             <div key={index} className="bg-white rounded-lg shadow p-4 flex flex-col">
-              {item.image && <Image src={item.image} alt={item.title} className="w-full h-48 object-cover rounded" />}
+              {item.image && (
+                  <Image
+    src={item.image}
+    alt={item.title}
+    width={500}
+    height={300}
+    className="w-full h-48 object-cover rounded"
+  />
+)}
               <div className="flex-grow mt-4">
                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-red-700 hover:underline">
                   {item.title}
                 </a>
                 <p className="text-sm text-gray-600 mt-2">{item.description}</p>
               </div>
-              <p className="text-xs text-gray-400 mt-4">{new Date(item.publishedAt).toLocaleString()}</p>
+              <p className="text-xs text-gray-400 mt-4">{new Date(item.publishedAt).toLocaleString()} gfgf</p>
             </div>
           ))}
         </div>
